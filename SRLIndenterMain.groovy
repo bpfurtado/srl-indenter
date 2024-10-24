@@ -1,7 +1,7 @@
 def file = new File("sample.srl");
 
 def origLines = file.readLines();
-def lines = handleCurlyBraces(origLines)//splitSemiColon(origLines);
+def lines = handleLineTerminators(origLines)//splitSemiColon(origLines);
 def linesString = lines.join("\n")
 lines.clear()
 linesString.eachLine { line ->
@@ -33,7 +33,7 @@ def List<String> indentByCurlyBrace(List<String> lines) {
     return newLines
 }
 
-def List<String> handleCurlyBraces(List<String> lines) {
+def List<String> handleLineTerminators(List<String> lines) {
     def newLines = []
     lines.eachWithIndex { line, index ->
         if (isComment(line)) {
@@ -78,7 +78,6 @@ def List<String> handleCurlyBraces(List<String> lines) {
     return newLines
 }
 
-def Boolean isComment(String line)
-{
+def Boolean isComment(String line) {
     return line.trim().startsWith("//")
 }

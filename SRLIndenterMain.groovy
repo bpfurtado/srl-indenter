@@ -8,6 +8,7 @@ linesString.eachLine { line ->
     lines.add(line)
 }
 lines = indentByCurlyBrace(lines)
+lines = uniteClosingBracesAndCatch(lines)
 
 def newFile = new File("sample-out.srl");
 newFile.write(lines.join("\n"));
@@ -74,6 +75,23 @@ def List<String> handleLineTerminators(List<String> lines) {
             println "New Line:\nStart\n$finalLine\nEnd"
             newLines << finalLine
         }
+    }
+    return newLines
+}
+
+def uniteClosingBracesAndCatch(lines) {
+    def newLines = []
+    def previousLine = null
+    lines.eachWithIndex { line, index ->
+        //remove all space chars from the end of the line, do not use trim
+        line = line.replaceAll("\\s+\$", "")
+        if(previousLine != null && previousLine.trim() == "}" && line.trim().startsWith("catch")) {
+            newLines.removeAt(newLines.size() - 1)
+            newLines << previousLine + " " + line.trim()
+        } else {
+            newLines << line
+        }
+        previousLine = line
     }
     return newLines
 }

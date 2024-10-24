@@ -1,0 +1,4 @@
+try {
+a=a+1;
+} catch an Exception with { addErrorWithCause(111223, "Error on "charSectionName" at "funcName); }
+log("END")

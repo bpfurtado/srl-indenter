@@ -333,8 +333,7 @@ and
 monthsBetweenNewestDateFieldAndNextDateFiled <> -999 //PSFD-176 - RC: It's FALSE for me because DATEFILED_NEXT=null
 and
 monthsBetweenNewestDateFieldAndNextDateFiled <= 18
-)
-) then
+)) then
 {
 applicant.decision.bkFlgCprolltobkLte18M = true;
 log("Char-036: applicant.decision.bkFlgCprolltobkLte18M="applicant.decision.bkFlgCprolltobkLte18M);

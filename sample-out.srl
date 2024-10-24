@@ -141,11 +141,11 @@ try {
                             narrative1 is a string initially "";
                             narrative2 is a string initially "";
                             if(
-                            firstBkItem.narratives <> null
-                            and
-                            firstBkItem.narratives.narrative <> null
-                            and
-                            firstBkItem.narratives.narrative.count > 0
+                                firstBkItem.narratives <> null
+                                and
+                                firstBkItem.narratives.narrative <> null
+                                and
+                                firstBkItem.narratives.narrative.count > 0
                             ) then {
                                 narrative1 = firstBkItem.narratives.narrative[0].code;
                                 if firstBkItem.narratives.narrative.count > 1 then {
@@ -155,12 +155,12 @@ try {
                             log("narrative1["narrative1"] narrative2["narrative2"]");
 
                             firstDateSettledStr is a string initially null;
-                            if (firstBkItem.intentOrDisposition <> null) then {
-                                firstDateSettledStr = firstBkItem.intentOrDisposition.date;
-                            }
-                            log("firstDateSettledStr="firstDateSettledStr);
+                        if (firstBkItem.intentOrDisposition <> null) then {
+                            firstDateSettledStr = firstBkItem.intentOrDisposition.date;
+                        }
+                        log("firstDateSettledStr="firstDateSettledStr);
 
-                            if(
+                        if(
                             firstDateSettledStr <> null
                             or
                             (dispositionCode <> null and dispositionCode = "A")
@@ -168,199 +168,199 @@ try {
                             narrative1 = "DB"
                             or
                             narrative2 = "DB"
-                            ) then {
-                                applicant.decision.bkFlgDchDef = 1;
-                                log(charSectionName": applicant.decision.bkFlgDchDef="applicant.decision.bkFlgDchDef);
-                            }
-                        }
-                    } catch an Exception with {
-                        addErrorWithCause(111223, "Error on"charSectionName" at "funcName);
-                    }
-                    closeLogSection();
-                }
-
-                //Char-002 - bkAmtLiab
-                charSectionName = "Char-002";
-                log(charSectionName);
-                try {
-                    //IF DATESETTLED < 0 OR DISPOSITIONCODE NOT IN ("A") THEN
-                    //SUM (AMOUNTOFLIABILITY, 0)
-                    if(currentDateSettled = null or dispositionCode <> "A") then
-                    {
-                        applicant.decision.bkAmtLiab = applicant.decision.bkAmtLiab+it.liabilityAmount.value;
-                        log("Char-002: applicant.decision.bkAmtLiab="applicant.decision.bkAmtLiab);
-                    }
-                } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
-                }
-
-                //Char-003 - bkDtDchMax
-                charSectionName = "Char-003";
-                log(charSectionName);
-                try {
-                    //MAX (s13Bankruptcy.datesettled)
-                    if(currentDateSettledAsDate <> null and currentDateSettledAsDate > applicant.decision.bkDtDchMax) then
-                    {
-                        applicant.decision.bkDtDchMax = currentDateSettledAsDate;
-                        log("Char-003: applicant.decision.bkDtDchMax="applicant.decision.bkDtDchMax);
-                    }
-                } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
-                }
-
-                //Char-004 - bkDtFileDchMax
-                charSectionName = "Char-004";
-                log(charSectionName);
-                try {
-                    //IF DATESETTLED > 0 OR DISPOSITIONCODE = "A" THEN MAX(DATEFILED)
-                    if (currentDateSettled is not null or dispositionCode = "A") then
-                    {
-                        if (currentDateFiledAsDate > applicant.decision.bkDtFileDchMax) then
-                        {
-                            applicant.decision.bkDtFileDchMax = currentDateFiledAsDate;
-                            log("Char-004: applicant.decision.bkDtFileDchMax="applicant.decision.bkDtFileDchMax);
+                        ) then {
+                            applicant.decision.bkFlgDchDef = 1;
+                            log(charSectionName": applicant.decision.bkFlgDchDef="applicant.decision.bkFlgDchDef);
                         }
                     }
                 } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+                    addErrorWithCause(111223, "Error on"charSectionName" at "funcName);
                 }
+                closeLogSection();
+            }
 
-                //Char-005 - bkDtFileMax
-                charSectionName = "Char-005";
-                log(charSectionName);
-                try {
-                    //MAX (s13Bankruptcy.datefiled)
-                    if(currentDateFiledAsDate > applicant.decision.bkDtFileMax) then
+            //Char-002 - bkAmtLiab
+            charSectionName = "Char-002";
+            log(charSectionName);
+            try {
+                //IF DATESETTLED < 0 OR DISPOSITIONCODE NOT IN ("A") THEN
+                //SUM (AMOUNTOFLIABILITY, 0)
+                if(currentDateSettled = null or dispositionCode <> "A") then
+                {
+                    applicant.decision.bkAmtLiab = applicant.decision.bkAmtLiab+it.liabilityAmount.value;
+                    log("Char-002: applicant.decision.bkAmtLiab="applicant.decision.bkAmtLiab);
+                }
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
+
+            //Char-003 - bkDtDchMax
+            charSectionName = "Char-003";
+            log(charSectionName);
+            try {
+                //MAX (s13Bankruptcy.datesettled)
+                if(currentDateSettledAsDate <> null and currentDateSettledAsDate > applicant.decision.bkDtDchMax) then
+                {
+                    applicant.decision.bkDtDchMax = currentDateSettledAsDate;
+                    log("Char-003: applicant.decision.bkDtDchMax="applicant.decision.bkDtDchMax);
+                }
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
+
+            //Char-004 - bkDtFileDchMax
+            charSectionName = "Char-004";
+            log(charSectionName);
+            try {
+                //IF DATESETTLED > 0 OR DISPOSITIONCODE = "A" THEN MAX(DATEFILED)
+                if (currentDateSettled is not null or dispositionCode = "A") then
+                {
+                    if (currentDateFiledAsDate > applicant.decision.bkDtFileDchMax) then
                     {
-                        applicant.decision.bkDtFileMax = currentDateFiledAsDate;
-                        log("Char-005: applicant.decision.bkDtFileMax="applicant.decision.bkDtFileMax);
+                        applicant.decision.bkDtFileDchMax = currentDateFiledAsDate;
+                        log("Char-004: applicant.decision.bkDtFileDchMax="applicant.decision.bkDtFileDchMax);
                     }
-                } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
                 }
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
 
-                //Char-006 - bkDtFileUndchMax
-                charSectionName = "Char-006";
-                log(charSectionName);
-                try {
-                    //IF currentDateSettledAsDate <= 0 OR dispositionCode <> "A" THEN set bkDtFileUndchMax = MAX (dateFiled)
-                    if(currentDateSettled = null or dispositionCode <> "A") then
+            //Char-005 - bkDtFileMax
+            charSectionName = "Char-005";
+            log(charSectionName);
+            try {
+                //MAX (s13Bankruptcy.datefiled)
+                if(currentDateFiledAsDate > applicant.decision.bkDtFileMax) then
+                {
+                    applicant.decision.bkDtFileMax = currentDateFiledAsDate;
+                    log("Char-005: applicant.decision.bkDtFileMax="applicant.decision.bkDtFileMax);
+                }
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
+
+            //Char-006 - bkDtFileUndchMax
+            charSectionName = "Char-006";
+            log(charSectionName);
+            try {
+                //IF currentDateSettledAsDate <= 0 OR dispositionCode <> "A" THEN set bkDtFileUndchMax = MAX (dateFiled)
+                if(currentDateSettled = null or dispositionCode <> "A") then
+                {
+                    if (currentDateFiledAsDate > applicant.decision.bKDtFileUndchMax) then
                     {
-                        if (currentDateFiledAsDate > applicant.decision.bKDtFileUndchMax) then
-                        {
-                            applicant.decision.bKDtFileUndchMax = currentDateFiledAsDate;
-                            log("Char-006: applicant.decision.bkDtFileUndchMax="applicant.decision.bKDtFileUndchMax);
-                        }
+                        applicant.decision.bKDtFileUndchMax = currentDateFiledAsDate;
+                        log("Char-006: applicant.decision.bkDtFileUndchMax="applicant.decision.bKDtFileUndchMax);
                     }
-                } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
                 }
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
 
-                //Char-007 - bkNum
-                charSectionName = "Char-007";
-                log(charSectionName);
-                try {
-                    //count (headerId)
-                    applicant.decision.bkNum = applicant.decision.bkNum + 1;
-                    log("Char-007: applicant.decision.bkNum="applicant.decision.bkNum);
-                } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            //Char-007 - bkNum
+            charSectionName = "Char-007";
+            log(charSectionName);
+            try {
+                //count (headerId)
+                applicant.decision.bkNum = applicant.decision.bkNum + 1;
+                log("Char-007: applicant.decision.bkNum="applicant.decision.bkNum);
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
+
+            //Char-008 - bkNumDch
+            charSectionName = "Char-008";
+            log(charSectionName);
+            try {
+                // IF currentDateSettledAsDate <> NULL OR dispositioncode = "A" THEN count (headerId)
+                if (currentDateSettled is not null or dispositionCode = "A") then
+                {
+                    applicant.decision.bkNumDch = applicant.decision.bkNumDch + 1;
+                    log("Char-008: applicant.decision.bkNumDch="applicant.decision.bkNumDch);
                 }
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
 
-                //Char-008 - bkNumDch
-                charSectionName = "Char-008";
-                log(charSectionName);
-                try {
-                    // IF currentDateSettledAsDate <> NULL OR dispositioncode = "A" THEN count (headerId)
-                    if (currentDateSettled is not null or dispositionCode = "A") then
-                    {
-                        applicant.decision.bkNumDch = applicant.decision.bkNumDch + 1;
-                        log("Char-008: applicant.decision.bkNumDch="applicant.decision.bkNumDch);
-                    }
-                } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            //Char-009 - bkNumDef
+            charSectionName = "Char-009";
+            log(charSectionName);
+            try {
+                // COUNT Records IF (NARRATIVECODE1="DB" OR NARRATIVECODE2="DB")
+                if(at least 1 CodeType in bkNarratives satisfies (code = (ignoring case) "DB")) then
+                {
+                    applicant.decision.bkNumDef = applicant.decision.bkNumDef+1;
+                    log("Char-008: applicant.decision.bkNumDef="applicant.decision.bkNumDef);
                 }
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
 
-                //Char-009 - bkNumDef
-                charSectionName = "Char-009";
-                log(charSectionName);
-                try {
-                    // COUNT Records IF (NARRATIVECODE1="DB" OR NARRATIVECODE2="DB")
-                    if(at least 1 CodeType in bkNarratives satisfies (code = (ignoring case) "DB")) then
-                    {
-                        applicant.decision.bkNumDef = applicant.decision.bkNumDef+1;
-                        log("Char-008: applicant.decision.bkNumDef="applicant.decision.bkNumDef);
-                    }
-                } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            //Char-010 - bkNumRidePlus
+            charSectionName = "Char-010";
+            log(charSectionName);
+            try {
+                //IF s13Bankruptcy.dispositioncode in ("B","C","E","F","G","I","Q","V","Y") THEN Count Records (s13Bankruptcy.headerid)
+                if (dispositionCode = ("B" or "C" or "E" or "F" or "G" or "I" or "Q" or "V" or "Y")) then
+                {
+                    applicant.decision.bkNumRidePlus = applicant.decision.bkNumRidePlus + 1;
                 }
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
 
-                //Char-010 - bkNumRidePlus
-                charSectionName = "Char-010";
-                log(charSectionName);
-                try {
-                    //IF s13Bankruptcy.dispositioncode in ("B","C","E","F","G","I","Q","V","Y") THEN Count Records (s13Bankruptcy.headerid)
-                    if (dispositionCode = ("B" or "C" or "E" or "F" or "G" or "I" or "Q" or "V" or "Y")) then
-                    {
-                        applicant.decision.bkNumRidePlus = applicant.decision.bkNumRidePlus + 1;
-                    }
-                } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            //Char-011 - bkNumUndchLiabLt10k
+            charSectionName = "Char-011";
+            log(charSectionName);
+            try {
+                //COUNT Records IF (DATESETTLED < 0 OR DISPOSITIONCODE NOT IN ("A")) AND AMOUNTOFLIABILITY < 10000)
+                amountOfLiability is a real initially it.liabilityAmount.value;
+                if ((currentDateSettled = null or dispositionCode <> "A") and (amountOfLiability = null or amountOfLiability < 10000)) then //BPF
+                {
+                    applicant.decision.bkNumUndchLiabLt10k = applicant.decision.bkNumUndchLiabLt10k + 1;
+                    log("Char-011: applicant.decision.bkNumUndchLiabLt10k="applicant.decision.bkNumUndchLiabLt10k);
                 }
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
 
-                //Char-011 - bkNumUndchLiabLt10k
-                charSectionName = "Char-011";
-                log(charSectionName);
-                try {
-                    //COUNT Records IF (DATESETTLED < 0 OR DISPOSITIONCODE NOT IN ("A")) AND AMOUNTOFLIABILITY < 10000)
-                    amountOfLiability is a real initially it.liabilityAmount.value;
-                    if ((currentDateSettled = null or dispositionCode <> "A") and (amountOfLiability = null or amountOfLiability < 10000)) then //BPF
-                    {
-                        applicant.decision.bkNumUndchLiabLt10k = applicant.decision.bkNumUndchLiabLt10k + 1;
-                        log("Char-011: applicant.decision.bkNumUndchLiabLt10k="applicant.decision.bkNumUndchLiabLt10k);
-                    }
-                } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            //Char-035.1 - bkFlgCp
+            charSectionName = "Char-035";
+            log(charSectionName);
+            try {
+                //IF (DISPOSITIONCODE IN ("G","J")) THEN = 1
+                xbkFlgCp = false;
+                if(dispositionCode = ("G" or "J")) then
+                {
+                    xbkFlgCp = true;
+                    log("Char-035.1 - xbkFlgCp="xbkFlgCp);
                 }
+            } catch an Exception with {
+                addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
+            }
 
-                //Char-035.1 - bkFlgCp
-                charSectionName = "Char-035";
-                log(charSectionName);
-                try {
-                    //IF (DISPOSITIONCODE IN ("G","J")) THEN = 1
-                    xbkFlgCp = false;
-                    if(dispositionCode = ("G" or "J")) then
-                    {
-                        xbkFlgCp = true;
-                        log("Char-035.1 - xbkFlgCp="xbkFlgCp);
-                    }
-                } catch an Exception with {
-                    addErrorWithCause(111223, "Error on "charSectionName" at "funcName);
-                }
+            monthsBetweenNewestDateFieldAndNextDateFiled is an integer initially unknown;
 
-                monthsBetweenNewestDateFieldAndNextDateFiled is an integer initially unknown;
+            //Char-036 - bkFlgCprolltobkLte18M
+            charSectionName = "Char-036";
+            log(charSectionName);
+            try {
+                //log(charSectionName" - currentDateFiled["currentDateFiled"] nextDateFiled["nextDateFiled"] xbkFlgCp["xbkFlgCp"] currentDateSettled["currentDateSettled"]");
+                //IF (BKFLGCP=1 AND DATESETTLED = NULL AND (months between the newest DATEFILED, next DATEFILED) <=18) THEN set to = "1"
+                applicant.decision.bkFlgCprolltobkLte18M = false;
 
-                //Char-036 - bkFlgCprolltobkLte18M
-                charSectionName = "Char-036";
-                log(charSectionName);
-                try {
-                    //log(charSectionName" - currentDateFiled["currentDateFiled"] nextDateFiled["nextDateFiled"] xbkFlgCp["xbkFlgCp"] currentDateSettled["currentDateSettled"]");
-                    //IF (BKFLGCP=1 AND DATESETTLED = NULL AND (months between the newest DATEFILED, next DATEFILED) <=18) THEN set to = "1"
-                    applicant.decision.bkFlgCprolltobkLte18M = false;
-
-                    if(currentDateFiled = null or nextDateFiled = null) then
-                    {
-                        log("newestDateFiled or nextDateFiled is unavailable, so we cannot calculate Char-036, monthsBetweenNewestDateFieldAndNextDateFiled will be -999");
-                        monthsBetweenNewestDateFieldAndNextDateFiled = -999;
-                        log("monthsBetweenNewestDateFieldAndNextDateFiled="monthsBetweenNewestDateFieldAndNextDateFiled);
-                    }
-                    else {
-                        log("will call monthsBetweenDates("currentDateFiled","nextDateFiled", yyyy-MM)");
-                        monthsBetweenNewestDateFieldAndNextDateFiled = rulesHelper.termSetInput.monthsBetweenDates(currentDateFiled, nextDateFiled, "yyyy-MM");
-                    }
+                if(currentDateFiled = null or nextDateFiled = null) then
+                {
+                    log("newestDateFiled or nextDateFiled is unavailable, so we cannot calculate Char-036, monthsBetweenNewestDateFieldAndNextDateFiled will be -999");
+                    monthsBetweenNewestDateFieldAndNextDateFiled = -999;
                     log("monthsBetweenNewestDateFieldAndNextDateFiled="monthsBetweenNewestDateFieldAndNextDateFiled);
-                    //log(charSectionName" - xbkFlgCp["xbkFlgCp"] currentDateSettled["currentDateSettled"] monthsBetweenNewestDateFieldAndNextDateFiled="monthsBetweenNewestDateFieldAndNextDateFiled);
-                    if(
+                }
+                else {
+                    log("will call monthsBetweenDates("currentDateFiled","nextDateFiled", yyyy-MM)");
+                    monthsBetweenNewestDateFieldAndNextDateFiled = rulesHelper.termSetInput.monthsBetweenDates(currentDateFiled, nextDateFiled, "yyyy-MM");
+                }
+                log("monthsBetweenNewestDateFieldAndNextDateFiled="monthsBetweenNewestDateFieldAndNextDateFiled);
+                //log(charSectionName" - xbkFlgCp["xbkFlgCp"] currentDateSettled["currentDateSettled"] monthsBetweenNewestDateFieldAndNextDateFiled="monthsBetweenNewestDateFieldAndNextDateFiled);
+                if(
                     xbkFlgCp = true
                     and
                     currentDateSettled = null
@@ -369,8 +369,7 @@ try {
                     monthsBetweenNewestDateFieldAndNextDateFiled <> -999 //PSFD-176 - RC: It's FALSE for me because DATEFILED_NEXT=null
                     and
                     monthsBetweenNewestDateFieldAndNextDateFiled <= 18
-                    )
-                    ) then
+                    )) then
                     {
                         applicant.decision.bkFlgCprolltobkLte18M = true;
                         log("Char-036: applicant.decision.bkFlgCprolltobkLte18M="applicant.decision.bkFlgCprolltobkLte18M);
@@ -385,7 +384,7 @@ try {
                 try {
                     //log(charSectionName" - currentDateFiled["currentDateFiled"] nextDateFiled["nextDateFiled"]");
                     //IF (BKFLGCPROLLTOBKLTE18M = 0 AND DATESETTLED <> NULL) THEN set BkDtFileDchExclCprollMax = newest DATEFILED
-                    //        if(applicant.decision.bkFlgCprolltobkLte18M = false and currentDateSettled is not null) then {
+                //        if(applicant.decision.bkFlgCprolltobkLte18M = false and currentDateSettled is not null) then {
                     //          applicant.decision.bkDtFileDchExclCprollMax = datefiled;
                     //          log("Char-037: applicant.decision.bkDtFileDchExclCprollMax="applicant.decision.bkDtFileDchExclCprollMax);
                     //        }
@@ -410,13 +409,13 @@ try {
                     //(BKFLGCP=1 AND newest DATESETTLED = NULL and the next DATESETTLED = NULL AND
                     //(Months between ,newest DATEFILED, next DATEFILED) <=18 )
                     if(
-                    xbkFlgCp = true
-                    and
-                    currentDateSettled = null
-                    and
-                    nextDateSettled = null
-                    and
-                    monthsBetweenNewestDateFieldAndNextDateFiled > 18
+                        xbkFlgCp = true
+                        and
+                        currentDateSettled = null
+                        and
+                        nextDateSettled = null
+                        and
+                        monthsBetweenNewestDateFieldAndNextDateFiled > 18
                     ) then {
                         increment applicant.decision.bkNumCprolltobkGt18M;
                         log("Char-038: applicant.decision.bkNumCprolltobkGt18M="applicant.decision.bkNumCprolltobkGt18M);
@@ -460,17 +459,17 @@ try {
                 log(charSectionName);
                 try {
                     log("currentDateSettled["currentDateSettled"] nextDateFiled["nextDateFiled"]");
-                    if(currentDateSettled = null or nextDateFiled = null) then {
-                        log("currentDateSettled = null or nextDateFiled is unavailable, so we cannot calculate Char-041, monthsBetweenDateSettledAndNextDateFiled will be -999");
-                        monthsBetweenDateSettledAndNextDateFiled = -999;
-                        log("monthsBetweenDateSettledAndNextDateFiled="monthsBetweenDateSettledAndNextDateFiled);
-                    }
-                    else {
-                        monthsBetweenDateSettledAndNextDateFiled = rulesHelper.termSetInput.monthsBetweenDates(currentDateSettled, nextDateFiled, "yyyy-MM");
-                        log("monthsBetweenDateSettledAndNextDateFiled="monthsBetweenDateSettledAndNextDateFiled);
-                        log("bkFlgCprolltobkLte18M is ["applicant.decision.bkFlgCprolltobkLte18M"]");
-                        //COUNT Records IF (BKFLGCPROLLTOBKLTE18M=0 AND  (months between newest DATESETTLED, next DATEFILED) <=60)
-                        if(
+                if(currentDateSettled = null or nextDateFiled = null) then {
+                    log("currentDateSettled = null or nextDateFiled is unavailable, so we cannot calculate Char-041, monthsBetweenDateSettledAndNextDateFiled will be -999");
+                    monthsBetweenDateSettledAndNextDateFiled = -999;
+                    log("monthsBetweenDateSettledAndNextDateFiled="monthsBetweenDateSettledAndNextDateFiled);
+                }
+                else {
+                    monthsBetweenDateSettledAndNextDateFiled = rulesHelper.termSetInput.monthsBetweenDates(currentDateSettled, nextDateFiled, "yyyy-MM");
+                    log("monthsBetweenDateSettledAndNextDateFiled="monthsBetweenDateSettledAndNextDateFiled);
+                    log("bkFlgCprolltobkLte18M is ["applicant.decision.bkFlgCprolltobkLte18M"]");
+                    //COUNT Records IF (BKFLGCPROLLTOBKLTE18M=0 AND  (months between newest DATESETTLED, next DATEFILED) <=60)
+                    if(
                         applicant.decision.bkFlgCprolltobkLte18M = false
                         and
                         monthsBetweenDateSettledAndNextDateFiled >= 0
@@ -543,10 +542,10 @@ try {
                     //AND Months between dateFiled, dateThisReport > 60
                     //AND BKFLGCPROLLTOBKLTE18M = 0
                     if (
-                    (currentDateSettled = null or dispositionCode <> (ignoring case) "A")
-                    and dispositionCode = ("G" or "J")
-                    and applicant.decision.bkFlgCprolltobkLte18M = false
-                    and diffDateFiledAndDateOfThisReport > 60
+                        (currentDateSettled = null or dispositionCode <> (ignoring case) "A")
+                        and dispositionCode = ("G" or "J")
+                        and applicant.decision.bkFlgCprolltobkLte18M = false
+                        and diffDateFiledAndDateOfThisReport > 60
                     ) then {
                         increment applicant.decision.bkNumUndchcpGt60MExclCproll;
                         log("Char-101: bkNumUndchcpGt60MExclCproll="applicant.decision.bkNumUndchcpGt60MExclCproll);

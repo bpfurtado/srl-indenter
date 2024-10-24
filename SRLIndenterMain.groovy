@@ -21,12 +21,19 @@ def List<String> indentByCurlyBrace(List<String> lines) {
     lines.eachWithIndex { line, index ->
         println "I($indent): [$line] - hasClose[" + line.contains("}") + "] - hasOpen[" + line.contains("{") + "]"
         def indentSufix = ''// " // Indent: $indent"
-        if (!isComment(line) && line.contains("{")) {
+        if (line =~ /\)\s*then\s*\{/) { //check if the line is )<spaces_optional>then<spaces_optional>{
+            indent--
+            newLines.add("    " * indent + line + indentSufix)
+            indent++
+        } else if (!isComment(line) && line.contains("{")) {
             newLines.add("    " * indent + line + indentSufix)
             indent++
         } else if (!isComment(line) && line.contains("}")) {
             indent--
             newLines.add("    " * indent + line + indentSufix)
+        } else if (!isComment(line) && line.trim() =~ /^if\s*\(\s*$/) { //check if the line is if<spaces_optional>(
+            newLines.add("    " * indent + line + indentSufix)
+            indent++
         } else {
             newLines.add("    " * indent + line + indentSufix)
         }
